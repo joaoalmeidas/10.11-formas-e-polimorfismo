@@ -9,6 +9,10 @@ public class MinhaLinha {
 	private int y2;
 	
 	private Color cor;
+	
+	public MinhaLinha() {
+		this(0, 0, 0, 0, Color.BLACK);
+	}
 
 	public MinhaLinha(int x1, int y1, int x2, int y2, Color cor) {
 		
