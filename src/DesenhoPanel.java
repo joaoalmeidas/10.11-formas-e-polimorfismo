@@ -1,66 +1,72 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.security.SecureRandom;
+import java.util.Arrays;
 
 import javax.swing.JPanel;
 
 public class DesenhoPanel extends JPanel{
 	
 	private SecureRandom aleatorio = new SecureRandom();
-	private MinhaLinha[] linhas;
-	private MeuRetangulo[] retangulos;
-	private MinhaCircunferencia[] circunferencias;
+	private MinhaForma[] formas;
+
 	
-	public DesenhoPanel() {
+	public DesenhoPanel(int quantidade) {
+		
+		if(quantidade < 3) {
+			throw new IllegalArgumentException("quantidade precisa ser >= 3.");
+		}
 		
 		setBackground(Color.WHITE);
 		
-		linhas = new MinhaLinha[1 + aleatorio.nextInt(6)];
-		retangulos = new MeuRetangulo[1 + aleatorio.nextInt(6)];
-		circunferencias = new MinhaCircunferencia[1 + aleatorio.nextInt(6)];
+		formas = new MinhaForma[quantidade];
 		
-		for(int contador = 0; contador < linhas.length; contador++) {
+		for(int i = 0; i < formas.length; i++) {
 			
-			int x1 = aleatorio.nextInt(300);
-			int y1 = aleatorio.nextInt(300);
-			int x2 = aleatorio.nextInt(300);
-			int y2 = aleatorio.nextInt(300);
+			final int sorteiaForma = aleatorio.nextInt(3);
 			
-			Color cor = new Color(aleatorio.nextInt(256), aleatorio.nextInt(256), aleatorio.nextInt(256));
+			final int x1 = aleatorio.nextInt(300);
+			final int y1 = aleatorio.nextInt(300);
+			final int x2 = aleatorio.nextInt(300);
+			final int y2 = aleatorio.nextInt(300);
+			final Color cor = new Color(aleatorio.nextInt(256), aleatorio.nextInt(256), aleatorio.nextInt(256));
+			final boolean preenchido = aleatorio.nextBoolean();
 			
-			linhas[contador] = new MinhaLinha(x1, y1, x2, y2, cor);
+			if(i == 0 || i == 1 || i == 2) {
+				
+				if(i == 0) {
+					
+					formas[i] = new MinhaLinha(x1, y1, x2, y2, cor);
+					
+				}else if(i == 1) {
+					
+					formas[i] = new MinhaCircunferencia(x1, y1, x2, y2, cor, preenchido);
+					
+				}else if( i == 2) {
+					
+					formas[i] = new MeuRetangulo(x1, y1, x2, y2, cor, preenchido);
+					
+				}
+				
+			}else {
+				
+				if(sorteiaForma == 0) {
+					
+					formas[i] = new MinhaLinha(x1, y1, x2, y2, cor);
+					
+				}else if(sorteiaForma == 1) {
+					
+					formas[i] = new MinhaCircunferencia(x1, y1, x2, y2, cor, preenchido);
+					
+				}else if(sorteiaForma == 2) {
+					
+					formas[i] = new MeuRetangulo(x1, y1, x2, y2, cor, preenchido);
+					
+				}
+				
+			}
 			
-		}
-		
-		for(int contador = 0; contador < retangulos.length; contador++) {
-			
-			int x1 = aleatorio.nextInt(300);
-			int y1 = aleatorio.nextInt(300);
-			int x2 = aleatorio.nextInt(300);
-			int y2 = aleatorio.nextInt(300);
-			
-			Color cor = new Color(aleatorio.nextInt(256), aleatorio.nextInt(256), aleatorio.nextInt(256));
-			
-			boolean preenchido = aleatorio.nextBoolean();
-			
-			retangulos[contador] = new MeuRetangulo(x1, y1, x2, y2, preenchido, cor);
-			
-		}
-		
-		for(int contador = 0; contador < circunferencias.length; contador++) {
-			
-			int x1 = aleatorio.nextInt(300);
-			int y1 = aleatorio.nextInt(300);
-			int x2 = aleatorio.nextInt(300);
-			int y2 = aleatorio.nextInt(300);
-			
-			Color cor = new Color(aleatorio.nextInt(256), aleatorio.nextInt(256), aleatorio.nextInt(256));
-			
-			boolean preenchido = aleatorio.nextBoolean();
-			
-			circunferencias[contador] = new MinhaCircunferencia(x1, y1, x2, y2, cor, preenchido);
-			
-			
+
 		}
 		
 		
@@ -70,23 +76,14 @@ public class DesenhoPanel extends JPanel{
 		
 		super.paintComponent(g);
 		
-		for(MinhaLinha linha : linhas) {
+		
+		for(MinhaForma formaAtual : getFormas()) {
 			
-			linha.desenha(g);
+			formaAtual.desenha(g);
 			
 		}
 		
-		for(MeuRetangulo  ret : retangulos) {
-			
-			ret.desenha(g);
-			
-		}
-		
-		for(MinhaCircunferencia circ : circunferencias) {
-			
-			circ.desenha(g);
-			
-		}
+
 		
 	}
 
@@ -97,34 +94,40 @@ public class DesenhoPanel extends JPanel{
 	public void setAleatorio(SecureRandom aleatorio) {
 		this.aleatorio = aleatorio;
 	}
-
-	public MinhaLinha[] getLinhas() {
-		return linhas;
-	}
-
-	public void setLinhas(MinhaLinha[] linhas) {
-		this.linhas = linhas;
-	}
-
-	public MeuRetangulo[] getRetangulos() {
-		return retangulos;
-	}
-
-	public void setRetangulos(MeuRetangulo[] retangulos) {
-		this.retangulos = retangulos;
-	}
-
-	public MinhaCircunferencia[] getCircunferencias() {
-		return circunferencias;
-	}
-
-	public void setCircunferencias(MinhaCircunferencia[] circunferencias) {
-		this.circunferencias = circunferencias;
-	}
 	
+	public MinhaForma[] getFormas() {
+		return formas;
+	}
+
+	public void setFormas(MinhaForma[] formas) {
+		this.formas = formas;
+	}
+
 	public String retornaStatus() {
 		
-		return String.format("Linhas: %d, Circunferências: %d, Retângulos: %d", getLinhas().length, getCircunferencias().length, getRetangulos().length);
+		int linhas = 0;
+		int ret = 0;
+		int circ = 0;
+		
+		for(MinhaForma formaAtual : getFormas()) {
+			
+			if(formaAtual instanceof MeuRetangulo) {
+				
+				ret++;
+				
+			}else if(formaAtual instanceof MinhaCircunferencia) {
+				
+				circ++;
+				
+			}else if(formaAtual instanceof MinhaLinha) {
+				
+				linhas++;
+				
+			}
+			
+		}
+		
+		return String.format("Linhas: %d, Circunferências: %d, Retângulos: %d", linhas, circ, ret);
 		
 	}
 	

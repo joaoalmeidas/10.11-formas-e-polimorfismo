@@ -8,7 +8,7 @@ public class DesenhoTeste {
 	public static void main(String[] args) {
 		
 		
-		DesenhoPanel panel = new DesenhoPanel();
+		DesenhoPanel panel = new DesenhoPanel(3);
 		JFrame app = new JFrame();
 		JLabel status = new JLabel(panel.retornaStatus());
 		

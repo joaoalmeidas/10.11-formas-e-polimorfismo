@@ -7,11 +7,11 @@ public class MeuRetangulo extends MinhaForma {
 	
 	public MeuRetangulo() {
 		
-		this(0, 0, 0, 0, false, Color.BLACK);
+		this(0, 0, 0, 0, Color.BLACK, false);
 		
 	}
 
-	public MeuRetangulo(int x1, int y1, int x2, int y2, boolean preenchido, Color cor) {
+	public MeuRetangulo(int x1, int y1, int x2, int y2, Color cor, boolean preenchido) {
 		super(x1, y1, x2, y2, cor);
 		this.preenchido = preenchido;
 	}
@@ -51,6 +51,7 @@ public class MeuRetangulo extends MinhaForma {
 	public void setPreenchido(boolean preenchido) {
 		this.preenchido = preenchido;
 	}
+	
 	
 
 }

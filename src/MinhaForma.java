@@ -66,4 +66,6 @@ public abstract class MinhaForma {
 	public abstract void desenha(Graphics g);
 	
 	
+	
+	
 }
