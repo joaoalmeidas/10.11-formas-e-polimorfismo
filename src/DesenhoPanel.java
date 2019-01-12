@@ -58,7 +58,8 @@ public class DesenhoPanel extends JPanel{
 			
 			boolean preenchido = aleatorio.nextBoolean();
 			
-			circunferencias[contador] = new MinhaCircunferencia(x1, y1, x2, y2, preenchido, cor);
+			circunferencias[contador] = new MinhaCircunferencia(x1, y1, x2, y2, cor, preenchido);
+			
 			
 		}
 		
